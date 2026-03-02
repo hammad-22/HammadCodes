@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hammad Shahid | Windows 98 Ed.</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- FAKE BSOD OVERLAY -->
+    <div id="bsod" class="bsod" onclick="hideBSOD()">
+        <div class="bsod-content">
+            <span class="bsod-bg">Windows</span>
+            <p>A fatal exception QE has occurred at 0028:C0011E36 in UXD VMM(01) + 00010E36. The current application
+                will be terminated.</p>
+            <p>* Press any key to terminate the current application.</p>
+            <p>* Press CTRL+ALT+DEL again to restart your computer. You will lose any unsaved information in all
+                applications.</p>
+            <p class="text-center mt-2">Press anywhere to continue _</p>
+        </div>
+    </div>
+
+    <!-- DESKTOP ICONS -->
+    <div class="desktop">
+        <div class="icon" ondblclick="restoreWindow('window-about')">
+            <img src="https://win98icons.alexmeub.com/icons/png/computer_explorer-4.png" alt="About">
+            <span>About</span>
+        </div>
+        <div class="icon" ondblclick="restoreWindow('window-capone')">
+            <img src="https://win98icons.alexmeub.com/icons/png/notepad-1.png" alt="Notepad">
+            <span>CapitalOne.txt</span>
+        </div>
+        <div class="icon" ondblclick="restoreWindow('window-projects')">
+            <img src="https://win98icons.alexmeub.com/icons/png/directory_closed-4.png" alt="Folder">
+            <span>Portfolio</span>
+        </div>
+        <div class="icon" ondblclick="restoreWindow('window-net')">
+            <img src="https://win98icons.alexmeub.com/icons/png/world-0.png" alt="Internet">
+            <span>Connect</span>
+        </div>
+        <div class="icon" ondblclick="restoreWindow('window-paint')">
+            <img src="https://win98icons.alexmeub.com/icons/png/paint_file-4.png" alt="Paint">
+            <span>Paint</span>
+        </div>
+        <div class="icon" ondblclick="restoreWindow('window-minesweeper')">
+            <img src="https://win98icons.alexmeub.com/icons/png/minesweeper-0.png" alt="Minesweeper">
+            <span>Minesweeper</span>
+        </div>
+        <div class="icon" ondblclick="restoreWindow('window-snake')">
+            <img src="https://win98icons.alexmeub.com/icons/png/console_prompt-0.png" alt="Snake">
+            <span>Snake.exe</span>
+        </div>
+        <div class="icon" ondblclick="restoreWindow('window-notepad')">
+            <img src="https://win98icons.alexmeub.com/icons/png/notepad_file-1.png" alt="Notepad">
+            <span>Notepad</span>
+        </div>
+        <div class="icon" ondblclick="restoreWindow('window-resume')">
+            <img src="https://win98icons.alexmeub.com/icons/png/document-0.png" alt="Resume">
+            <span>Resume.doc</span>
+        </div>
+        <div class="icon" ondblclick="restoreWindow('window-recycle')">
+            <img src="https://win98icons.alexmeub.com/icons/png/recycle_bin_full-4.png" alt="Recycle Bin">
+            <span>Recycle Bin</span>
+        </div>
+        <div class="icon" ondblclick="triggerBSOD()">
+            <img src="https://win98icons.alexmeub.com/icons/png/msg_warning-0.png" alt="System">
+            <span>System32</span>
+        </div>
+    </div>
+
+    <!-- WINDOW 1: ABOUT (Open by default) -->
+    <div class="window" id="window-about" style="top: 15%; left: 30%; width: 600px;">
+        <div class="title-bar" onmousedown="dragStart(event, 'window-about')">
+            <div class="title-bar-text">
+                <img src="https://win98icons.alexmeub.com/icons/png/computer_explorer-4.png" class="title-icon">
+                About.exe
+            </div>
+            <div class="title-bar-controls">
+                <button aria-label="Minimize" onclick="minimizeWindow('window-about')"></button>
+                <button aria-label="Maximize"></button>
+                <button aria-label="Close" onclick="closeWindow('window-about')"></button>
+            </div>
+        </div>
+        <div class="window-body" style="padding: 10px;">
+            <div class="taskbar-tabs" style="height:25px; margin-bottom: 10px;">
+                <div class="taskbar-tab active" onclick="switchAboutTab('summary')" id="tab-about-summary"
+                    style="width: auto; height:100%; padding:0 10px;">Summary</div>
+                <div class="taskbar-tab" onclick="switchAboutTab('experience')" id="tab-about-experience"
+                    style="width: auto; height:100%; padding:0 10px;">Experience</div>
+                <div class="taskbar-tab" onclick="switchAboutTab('education')" id="tab-about-education"
+                    style="width: auto; height:100%; padding:0 10px;">Education</div>
+                <div class="taskbar-tab" onclick="switchAboutTab('skills')" id="tab-about-skills"
+                    style="width: auto; height:100%; padding:0 10px;">Skills</div>
+            </div>
+
+            <!-- Summary Tab -->
+            <div id="content-about-summary" style="display:block;">
+                <div style="display:flex; gap: 15px; align-items:flex-start;">
+                    <img src="https://win98icons.alexmeub.com/icons/png/user_computer-1.png" alt="Hammad Shahid"
+                        style="width: 64px; height: 64px; image-rendering: pixelated; border: 2px solid var(--win98-border-dark);">
+                    <div style="flex: 1; font-size: 14px;">
+                        <h1 class="pixel-text" style="font-size: 20px; margin-bottom:5px;">Hammad Shahid</h1>
+                        <p><strong>Senior Software Engineer</strong> | Capital One</p>
+                        <p style="margin-top: 10px;">I build scalable backend APIS, immersive frontends, and AI-powered
+                            observability platforms. Based in New York City.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Experience Tab -->
+            <div id="content-about-experience" class="inset-box bg-white"
+                style="display:none; height: 180px; overflow-y: scroll; padding: 10px; color: black; font-size: 14px; box-sizing: border-box;">
+                <div style="margin-bottom: 15px;">
+                    <strong>Capital One</strong> — Sr. SWE, Enterprise Observability<br>
+                    <span style="font-size: 12px; color: #555;">2022 - Present | New York, NY</span>
+                    <ul style="margin-top: 5px; padding-left: 15px; font-size: 12px;">
+                        <li>Led observability rollout for Capital One's $35B Discover Financial acquisition,
+                            implementing APM-level tracing and comprehensive monitoring across distributed banking
+                            services.</li>
+                        <li>Built and scaled a full-stack AI-powered reliability platform (React, TypeScript, Node.js,
+                            Python, PostgreSQL) aggregating telemetry from CloudWatch, Splunk, and New Relic.</li>
+                        <li>Acted as an internal forward-deployed AI engineer, partnering with 15+ product and platform
+                            teams to identify high-value AI use cases, translate business workflows into AI solution
+                            designs.</li>
+                        <li>Designed and shipped an AI agent that analyzes application reliability scores and generates
+                            personalized, context-aware recommendations for engineering teams.</li>
+                        <li>Reduced false-positive PagerDuty alerts by 50% by designing and deploying a context-aware
+                            alert suppression platform that eliminated 90+ engineering hours per month.</li>
+                        <li>Accelerated team development velocity by 25% by pioneering AI-assisted engineering workflows
+                            using Claude Code, Cursor, and Copilot.</li>
+                    </ul>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <strong>Capital One</strong> — Android Engineer, Eno AI<br>
+                    <span style="font-size: 12px; color: #555;">2021 - 2022</span>
+                    <ul style="margin-top: 5px; padding-left: 15px; font-size: 12px;">
+                        <li>Delivered bi-weekly releases to millions of active users by building customer-facing
+                            features for Capital One’s AI assistant (Kotlin, Jetpack Compose, XML), reducing mean
+                            customer issue resolution time by 35%.</li>
+                        <li>Reduced fraudulent transaction exposure by 18% and improved transaction categorization
+                            accuracy to 94% by integrating AI-driven fraud detection and NLP-powered workflows.</li>
+                        <li>Led development of Eno Search and Eno Translate for Android, driving 40% feature adoption
+                            within 3 months.</li>
+                        <li>Migrated 60% of the Eno Android frontend from XML to Jetpack Compose, reducing UI build
+                            times by 40%.</li>
+                    </ul>
+                </div>
+                <div style="margin-bottom: 5px;">
+                    <strong>Capital One</strong> — SWE, Fraud Platforms<br>
+                    <span style="font-size: 12px; color: #555;">2020 - 2021</span>
+                    <ul style="margin-top: 5px; padding-left: 15px; font-size: 12px;">
+                        <li>Improved fraud detection latency by 50% by building data ingestion and transformation
+                            pipelines (Java Spark, AWS SQS, Lambda, Neptune) processing 10M+ daily transactions,
+                            replacing a legacy batch system and enabling sub-5-minute detection.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Education Tab -->
+            <div id="content-about-education" class="inset-box bg-white"
+                style="display:none; height: 180px; overflow-y: scroll; padding: 10px; color: black; font-size: 14px; box-sizing: border-box;">
+                <p><strong>University of Illinois Urbana-Champaign</strong></p>
+                <p style="font-size: 12px; margin-bottom: 15px;">MBA, AI & Analytics (2026-Present)</p>
+                <p><strong>University of Maryland</strong></p>
+                <p style="font-size: 12px; margin-bottom: 15px;">BS Computer Science, History Minor (2017-2021)</p>
+                <p><strong>Certifications:</strong></p>
+                <ul style="padding-left: 15px; font-size: 12px; margin-top:5px;">
+                    <li>AWS Certified AI Practitioner (2025)</li>
+                    <li>Observe Certified (2025)</li>
+                    <li>AWS Solutions Architect (2023)</li>
+                </ul>
+            </div>
+
+            <!-- Skills Tab -->
+            <div id="content-about-skills" class="inset-box bg-white"
+                style="display:none; height: 180px; overflow-y: scroll; padding: 10px; color: black; font-size: 14px; box-sizing: border-box;">
+                <p><strong>Frontend:</strong> React, Next.JS, Tailwind CSS, Jetpack Compose, Vue.js</p>
+                <p style="margin-top: 5px;"><strong>Backend:</strong> Node.js, Spring Boot, FastAPI, Java, Node, Express
+                </p>
+                <p style="margin-top: 5px;"><strong>Cloud/Infra:</strong> AWS (Lambda, ECS, Bedrock), Docker, K8s,
+                    Jenkins</p>
+                <p style="margin-top: 5px;"><strong>Data/AI:</strong> PostgreSQL, MongoDB, Snowflake, LangChain, RAG</p>
+                <p style="margin-top: 5px;"><strong>Languages:</strong> TS/JS, Python, Java, Kotlin, Swift, C/C++</p>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; margin-top: 10px;">
+                <button class="ok-btn" onclick="closeWindow('window-about')">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WINDOW 2: CAPITAL ONE (Open by default) -->
+    <div class="window" id="window-capone" style="top: 50%; left: 8%;">
+        <div class="title-bar" onmousedown="dragStart(event, 'window-capone')">
+            <div class="title-bar-text">
+                <img src="https://win98icons.alexmeub.com/icons/png/notepad-1.png" class="title-icon">
+                Notepad - CapitalOne.txt
+            </div>
+            <div class="title-bar-controls">
+                <button aria-label="Minimize" onclick="minimizeWindow('window-capone')"></button>
+                <button aria-label="Maximize"></button>
+                <button aria-label="Close" onclick="closeWindow('window-capone')"></button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="notepad-menu">File Edit Search Help</div>
+            <div class="inset-box bg-white font-mono text-large"
+                style="height: 300px; overflow-y: auto; overflow-x: hidden; padding: 10px;">
+                <p><strong>EMPLOYER:</strong> Capital One</p>
+                <p><strong>ROLE:</strong> Senior Software Engineer, Enterprise Observability</p>
+                <p><strong>DATE:</strong> 2022 - Present</p>
+                <br>
+                <p><strong>DETAILS:</strong></p>
+                <p>- Led observability rollout for Discover Financial acquisition ($35B), implementing APM-level tracing
+                    and comprehensive monitoring.</p>
+                <p>- Built and scaled a full-stack AI-powered reliability platform utilizing React, Node.js, Python,
+                    PostgreSQL, and Snowflake telemetry.</p>
+                <p>- Acted as an internal forward-deployed AI engineer, partnering with 15+ product teams for high-value
+                    AI tooling, reducing SEVs by 35%.</p>
+                <p>- Designed an AI agent that analyzes application reliability scores and generates context-aware
+                    recommendations for teams.</p>
+                <p>- Reduced false-positive PagerDuty alerts by 50% via a context-aware alert suppression platform
+                    eliminating 90+ engineering hours/month.</p>
+                <br>
+                <p><strong>ROLE:</strong> Android Engineer, Eno AI Assistant (2021-2022)</p>
+                <p>- Delivered bi-weekly releases (Kotlin, Compose) reducing mean customer issue resolution time by 35%
+                    via self-service workflows.</p>
+                <p>- Migrated 60% of Eno Android frontend from XML to Jetpack Compose, cutting UI build times by 40%.
+                </p>
+                <br>
+                <p><strong>ROLE:</strong> Software Engineer, Fraud & Data Platforms (2020-2021)</p>
+                <p>- Improved fraud detection latency by 50% by building data ingestion pipelines (Java Spark, DynamoDB)
+                    processing 10M+ daily transactions.</p>
+                <br>
+                <p>--- End of File ---</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- WINDOW 3: PROJECTS (Open by default) -->
+    <div class="window" id="window-projects" style="top: 10%; left: 60%; width: 450px;">
+        <div class="title-bar" onmousedown="dragStart(event, 'window-projects')">
+            <div class="title-bar-text">
+                <img src="https://win98icons.alexmeub.com/icons/png/directory_closed-4.png" class="title-icon">
+                C:\My_Projects\
+            </div>
+            <div class="title-bar-controls">
+                <button aria-label="Minimize" onclick="minimizeWindow('window-projects')"></button>
+                <button aria-label="Maximize"></button>
+                <button aria-label="Close" onclick="closeWindow('window-projects')"></button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="file-menu">
+                <span><u>F</u>ile</span>
+                <span><u>E</u>dit</span>
+                <span><u>V</u>iew</span>
+                <span><u>H</u>elp</span>
+            </div>
+            <div class="inset-box bg-white flex-col project-container text-large">
+
+                <!-- RENTBACK -->
+                <div class="project-item">
+                    <h3><img src="https://win98icons.alexmeub.com/icons/png/executable_script-0.png"
+                            class="inline-icon"> rentback.nyc</h3>
+                    <p>A highly-specialized NYC tenant rights platform. Integrating live property data and connecting
+                        multiple APIs to power an LLM-driven negotiation engine.</p>
+                    <div class="tags">
+                        <span class="win98-btn-small">Live Data</span>
+                        <span class="win98-btn-small">LLMs</span>
+                    </div>
+                    <a href="https://rentback.nyc" target="_blank" class="launch-btn text-bold">Execute Program</a>
+                </div>
+
+                <hr>
+
+                <!-- FOREMAN -->
+                <div class="project-item">
+                    <h3><img src="https://win98icons.alexmeub.com/icons/png/executable_script-0.png"
+                            class="inline-icon"> foreman.build</h3>
+                    <p>Streamlined construction management tooling engineered for scale and speed. Reimagining legacy
+                        workflows with a lightning-fast enterprise SaaS platform.</p>
+                    <div class="tags">
+                        <span class="win98-btn-small">SaaS</span>
+                        <span class="win98-btn-small">Enterprise</span>
+                    </div>
+                    <a href="https://foreman.build" target="_blank" class="launch-btn text-bold">Execute Program</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- WINDOW 4: CONNECT / LINKS (Open by default) -->
+    <div class="window" id="window-net" style="top: 55%; left: 55%;">
+        <div class="title-bar" onmousedown="dragStart(event, 'window-net')">
+            <div class="title-bar-text">
+                <img src="https://win98icons.alexmeub.com/icons/png/world-0.png" class="title-icon">
+                Connect.exe
+            </div>
+            <div class="title-bar-controls">
+                <button aria-label="Minimize" onclick="minimizeWindow('window-net')"></button>
+                <button aria-label="Maximize"></button>
+                <button aria-label="Close" onclick="closeWindow('window-net')"></button>
+            </div>
+        </div>
+        <div class="window-body text-center">
+            <p class="text-large">Establish a secure connection?</p>
+            <div class="dialog-buttons">
+                <a href="https://linkedin.com/in/shahid-hammad" target="_blank" class="win98-btn px text-large"
+                    style="display:flex;align-items:center;gap:8px;">
+                    <img src="https://win98icons.alexmeub.com/icons/png/address_book-0.png" style="width:16px;">
+                    LinkedIn
+                </a>
+                <a href="https://github.com/hammad-22" target="_blank" class="win98-btn px text-large"
+                    style="display:flex;align-items:center;gap:8px;">
+                    <img src="https://win98icons.alexmeub.com/icons/png/computer_explorer-4.png" style="width:16px;">
+                    GitHub
+                </a>
+                <a href="mailto:hammadshahid22@gmail.com" class="win98-btn px text-large"
+                    style="display:flex;align-items:center;gap:8px;">
+                    <img src="https://win98icons.alexmeub.com/icons/png/message_envelope_open-0.png"
+                        style="width:16px;">
+                    Email
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- WINDOW 5: PAINT (Easter Egg) -->
+    <div class="window hidden" id="window-paint" style="top: 20%; left: 15%; width: 400px; display: none;">
+        <div class="title-bar" onmousedown="dragStart(event, 'window-paint')">
+            <div class="title-bar-text">
+                <img src="https://win98icons.alexmeub.com/icons/png/paint_file-4.png" class="title-icon">
+                untitled - Paint
+            </div>
+            <div class="title-bar-controls">
+                <button aria-label="Minimize" onclick="minimizeWindow('window-paint')"></button>
+                <button aria-label="Maximize"></button>
+                <button aria-label="Close" onclick="closeWindow('window-paint')"></button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="file-menu">
+                <span onclick="clearPaint()" style="cursor: pointer; padding: 2px 4px;"><u>C</u>lear Canvas</span>
+            </div>
+            <div class="inset-box bg-white">
+                <canvas id="paintCanvas" width="350" height="200"
+                    style="border: 1px dashed #ccc; cursor: crosshair;"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- WINDOW 6: MINESWEEPER (Easter Egg) -->
+    <div class="window hidden" id="window-minesweeper" style="top: 25%; left: 25%; width: auto; display: none;">
+        <div class="title-bar" onmousedown="dragStart(event, 'window-minesweeper')">
+            <div class="title-bar-text">
+                <img src="https://win98icons.alexmeub.com/icons/png/minesweeper-0.png" class="title-icon">
+                Minesweeper
+            </div>
+            <div class="title-bar-controls">
+                <button aria-label="Minimize" onclick="minimizeWindow('window-minesweeper')"></button>
+                <button aria-label="Maximize"></button>
+                <button aria-label="Close" onclick="closeWindow('window-minesweeper')"></button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="file-menu">
+                <span onclick="initMinesweeper()" style="cursor: pointer; padding: 2px 4px;"><u>G</u>ame</span>
+                <span style="cursor: pointer; padding: 2px 4px;"><u>H</u>elp</span>
+            </div>
+            <div class="inset-box bg-silver flex-col align-center" style="padding: 10px;">
+                <div class="minesweeper-header outset-border">
+                    <div class="minesweeper-tracker inset-border text-red" id="mineCount">010</div>
+                    <div class="minesweeper-face outset-border" id="minesweeperFace" onclick="initMinesweeper()">🙂
+                    </div>
+                    <div class="minesweeper-tracker inset-border text-red" id="mineTimer">000</div>
+                </div>
+                <div id="minesweeperGrid" class="minesweeper-grid inset-border">
+                    <!-- generated by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WINDOW 7: SNAKE (Easter Egg) -->
+    <div class="window hidden" id="window-snake" style="top: 30%; left: 35%; width: auto; display: none;">
+        <div class="title-bar" onmousedown="dragStart(event, 'window-snake')">
+            <div class="title-bar-text">
+                <img src="https://win98icons.alexmeub.com/icons/png/console_prompt-0.png" class="title-icon">
+                Snake.exe
+            </div>
+            <div class="title-bar-controls">
+                <button aria-label="Minimize" onclick="minimizeWindow('window-snake')"></button>
+                <button aria-label="Maximize"></button>
+                <button aria-label="Close" onclick="closeWindow('window-snake')"></button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="file-menu">
+                <span onclick="initSnake()" style="cursor: pointer; padding: 2px 4px;"><u>N</u>ew Game</span>
+            </div>
+            <div class="inset-box bg-silver flex-col align-center" style="padding: 10px;">
+                <div class="minesweeper-header outset-border">
+                    <div class="minesweeper-tracker inset-border text-red" id="snakeScore">000</div>
+                    <div style="font-size:11px; font-weight:bold;">SNAKE</div>
+                    <div class="minesweeper-tracker inset-border text-red" id="snakeHigh">000</div>
+                </div>
+                <!-- Important: Use tabindex to capture key strokes when focused -->
+                <div id="snakeGrid" class="minesweeper-grid inset-border snake-board" tabindex="0"
+                    onkeydown="handleSnakeKey(event)" style="outline:none;">
+                    <!-- generated by JS -->
+                </div>
+                <p style="font-size:10px; margin-top:5px; text-align:center;">Click game board and use arrow keys.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- WINDOW 8: RECYCLE BIN -->
+    <div class="window hidden" id="window-recycle" style="top: 40%; left: 45%; display: none;">
+        <div class="title-bar" onmousedown="dragStart(event, 'window-recycle')">
+            <div class="title-bar-text">
+                <img src="https://win98icons.alexmeub.com/icons/png/recycle_bin_full-4.png" class="title-icon">
+                Recycle Bin
+            </div>
+            <div class="title-bar-controls">
+                <button aria-label="Minimize" onclick="minimizeWindow('window-recycle')"></button>
+                <button aria-label="Maximize"></button>
+                <button aria-label="Close" onclick="closeWindow('window-recycle')"></button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="file-menu">
+                <span><u>F</u>ile</span>
+                <span><u>E</u>dit</span>
+                <span><u>V</u>iew</span>
+                <span><u>H</u>elp</span>
+            </div>
+            <div class="inset-box bg-white flex-col project-container text-large"
+                style="display:flex; flex-direction:row; gap: 20px; padding: 20px; align-items:flex-start;">
+                <div class="icon" ondblclick="playWin98Sound()" style="color:black;">
+                    <img src="https://win98icons.alexmeub.com/icons/png/sound_file-0.png" alt="Sound">
+                    <span style="color:black; text-shadow:none;">startup.wav</span>
+                </div>
+                <div class="icon" ondblclick="alert('File is corrupted!')" style="color:black;">
+                    <img src="https://win98icons.alexmeub.com/icons/png/file_lines-0.png" alt="File">
+                    <span style="color:black; text-shadow:none;">my_social_life.txt</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WINDOW 9: DISPLAY PROPERTIES -->
+    <div class="window hidden" id="window-display" style="top: 20%; left: 20%; width: 300px; display: none;">
+        <div class="title-bar" onmousedown="dragStart(event, 'window-display')">
+            <div class="title-bar-text">
+                <img src="https://win98icons.alexmeub.com/icons/png/display_properties-0.png" class="title-icon">
+                Display Properties
+            </div>
+            <div class="title-bar-controls">
+                <button aria-label="Minimize" onclick="minimizeWindow('window-display')"></button>
+                <button aria-label="Maximize"></button>
+                <button aria-label="Close" onclick="closeWindow('window-display')"></button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="taskbar-tabs" style="height:25px; margin-bottom: 5px;">
+                <div class="taskbar-tab active" style="width: auto; height:100%; padding:0 10px;">Background</div>
+            </div>
+            <div class="inset-box bg-silver flex-col align-center text-center" style="padding: 10px;">
+                <p>Select a background color:</p>
+                <select id="desktop-bg" style="width: 100%; padding: 2px; margin: 10px 0;">
+                    <option value="#008080">Classic Teal (Default)</option>
+                    <option value="#000000">Midnight Black</option>
+                    <option value="#000080">Deep Blue</option>
+                    <option value="#c0c0c0">Silver</option>
+                </select>
+            </div>
+            <div style="display:flex; justify-content:flex-end; gap:5px; margin-top:5px;">
+                <button class="ok-btn" onclick="applyDisplaySettings()">Apply</button>
+                <button class="ok-btn" onclick="closeWindow('window-display')">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WINDOW 10: NOTEPAD -->
+    <div class="window hidden" id="window-notepad" style="top: 25%; left: 35%; width: 400px; display: none;">
+        <div class="title-bar" onmousedown="dragStart(event, 'window-notepad')">
+            <div class="title-bar-text">
+                <img src="https://win98icons.alexmeub.com/icons/png/notepad_file-1.png" class="title-icon">
+                Untitled - Notepad
+            </div>
+            <div class="title-bar-controls">
+                <button aria-label="Minimize" onclick="minimizeWindow('window-notepad')"></button>
+                <button aria-label="Maximize"></button>
+                <button aria-label="Close" onclick="closeWindow('window-notepad')"></button>
+            </div>
+        </div>
+        <div class="window-body" style="padding:0; margin:0;">
+            <div class="file-menu" style="border-bottom: 2px solid var(--win98-border-light);">
+                <span><u>F</u>ile</span>
+                <span><u>E</u>dit</span>
+                <span><u>S</u>earch</span>
+                <span><u>H</u>elp</span>
+            </div>
+            <textarea spellcheck="false"
+                style="width: 100%; height: 250px; box-sizing: border-box; border: none; border-top: 1px solid var(--win98-border-dark); font-family: 'Courier New', Courier, monospace; font-size: 14px; padding: 4px; resize: none; outline: none; background: white; color: black;"></textarea>
+        </div>
+    </div>
+
+    <!-- WINDOW 11: RESUME.DOC -->
+    <div class="window hidden" id="window-resume"
+        style="top: 10%; left: 15%; width: 750px; height: 600px; display: none;">
+        <div class="title-bar" onmousedown="dragStart(event, 'window-resume')">
+            <div class="title-bar-text">
+                <img src="https://win98icons.alexmeub.com/icons/png/wordpad_file-1.png" class="title-icon">
+                Resume.doc - WordPad
+            </div>
+            <div class="title-bar-controls">
+                <button aria-label="Minimize" onclick="minimizeWindow('window-resume')"></button>
+                <button aria-label="Maximize"></button>
+                <button aria-label="Close" onclick="closeWindow('window-resume')"></button>
+            </div>
+        </div>
+        <div class="window-body"
+            style="padding:0; margin:0; display:flex; flex-direction:column; height: calc(100% - 22px);">
+            <div class="file-menu" style="border-bottom: 2px solid var(--win98-border-light);">
+                <span onclick="window.print()" style="cursor:pointer;"><u>F</u>ile > Print/Save PDF</span>
+                <span><u>E</u>dit</span>
+                <span><u>V</u>iew</span>
+                <span><u>H</u>elp</span>
+            </div>
+            <div
+                style="flex:1; padding: 20px; background: white; color: black; overflow-y: scroll; font-family: 'Times New Roman', Times, serif; font-size: 14px; line-height: 1.5; overflow-x: hidden;">
+                <h1 style="text-align:center; font-size: 24px; margin-bottom: 5px;">Hammad Shahid</h1>
+                <p style="text-align:center; margin-top: 5px;">hammadshahid22@gmail.com | 929-255-5622 |
+                    linked.in/in/shahid-hammad/ | github.com/hammad-22</p>
+                <hr style="border: none; border-top: 1px solid black; margin: 15px 0;">
+
+                <h2 style="font-size: 18px; text-transform: uppercase;">Experience</h2>
+
+                <div style="margin-bottom: 10px;">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+                        <strong style="font-size: 16px;">Capital One — Senior Software Engineer, Enterprise
+                            Observability</strong>
+                        <span style="font-style: italic; white-space: nowrap;">New York, NY | 2022 - Present</span>
+                    </div>
+                    <ul style="padding-left: 20px; margin-top: 5px;">
+                        <li>Led observability rollout for Capital One's $35B Discover Financial acquisition,
+                            implementing APM-level tracing and comprehensive monitoring across distributed banking
+                            services supporting 5M+ customers and $10B+ daily transactions.</li>
+                        <li>Built and scaled a full-stack AI-powered reliability platform (React, TypeScript, Node.js,
+                            Python, PostgreSQL, Snowflake) aggregating telemetry from CloudWatch, Splunk, and New Relic;
+                            embedded LLM-based summarization (AWS Bedrock) to surface plain-language reliability
+                            insights and automated scoring across 20+ enterprise banking teams.</li>
+                        <li>Acted as an internal forward-deployed AI engineer, partnering with 15+ product and platform
+                            teams to identify high-value AI use cases, translate business workflows into AI solution
+                            designs, and ship production agents and tooling, reducing SEV incidents by 35% across
+                            partner teams.</li>
+                        <li>Designed and shipped an AI agent that analyzes application reliability scores and generates
+                            personalized, context-aware recommendations for engineering teams on how to improve system
+                            health, translating raw telemetry into actionable guidance without requiring manual triage.
+                        </li>
+                        <li>Reduced false-positive PagerDuty alerts by 50% by designing and deploying a context-aware
+                            alert suppression platform (TypeScript, Node, PostgreSQL) that eliminated 90+ engineering
+                            hours per month across the enterprise.</li>
+                        <li>Accelerated team development velocity by 25% by pioneering AI-assisted engineering workflows
+                            using Claude Code, Cursor, and Copilot for automated code generation, debugging, & technical
+                            documentation.</li>
+                    </ul>
+                </div>
+
+                <div style="margin-bottom: 10px;">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+                        <strong style="font-size: 16px;">Capital One — Android Engineer, Eno AI Assistant</strong>
+                        <span style="font-style: italic; white-space: nowrap;">2021 - 2022</span>
+                    </div>
+                    <ul style="padding-left: 20px; margin-top: 5px;">
+                        <li>Delivered bi-weekly releases to millions of active users by building customer-facing
+                            features for Capital One’s AI assistant (Kotlin, Jetpack Compose, XML), reducing mean
+                            customer issue resolution time by 35% by streamlining self-service workflows.</li>
+                        <li>Reduced fraudulent transaction exposure by 18% and improved transaction categorization
+                            accuracy to 94% by integrating AI-driven fraud detection and NLP-powered categorization into
+                            mobile workflows handling 2M+ daily user interactions.</li>
+                        <li>Led development of Eno Search and Eno Translate for Android, driving 40% feature adoption
+                            within 3 months.</li>
+                        <li>Migrated 60% of the Eno Android frontend from XML to Jetpack Compose, reducing UI build
+                            times by 40%.</li>
+                    </ul>
+                </div>
+
+                <div style="margin-bottom: 10px;">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+                        <strong style="font-size: 16px;">Capital One — Software Engineer, Fraud and Data
+                            Platforms</strong>
+                        <span style="font-style: italic; white-space: nowrap;">2020 - 2021</span>
+                    </div>
+                    <ul style="padding-left: 20px; margin-top: 5px;">
+                        <li>Improved fraud detection latency by 50% by building data ingestion and transformation
+                            pipelines (Java Spark, AWS SQS, Lambda, Neptune) processing 10M+ daily transactions,
+                            replacing a legacy batch system and enabling sub-5-minute detection.</li>
+                        <li>Increased deployment frequency from 2x/week to 8x/week and reduced deployment failures by
+                            70% by designing and automating CI/CD pipelines for data services using Jenkins and
+                            CloudFormation.</li>
+                        <li>Reduced fraud investigation time from 1.5 hours to 45 minutes by building a full-stack
+                            internal application (React, Python, MongoDB) that visualized call center and fraud data.
+                        </li>
+                    </ul>
+                </div>
+
+                <hr style="border: none; border-top: 1px solid black; margin: 15px 0;">
+                <h2 style="font-size: 18px; text-transform: uppercase;">Side Projects</h2>
+                <ul style="padding-left: 20px;">
+                    <li><strong>RentBack (rentback.nyc):</strong> Built and deployed a production AI-powered rent
+                        negotiation platform for NYC renters. React/Next.js frontend, Python/FastAPI backend deployed on
+                        Google Cloud Run, with a multi-provider LLM pipeline (Groq, OpenAI, Mistral, Ollama). Supports
+                        multi-provider LLM routing with graceful fallback.</li>
+                    <li><strong>Foreman (foreman.build):</strong> AI-powered construction budgeting and automation
+                        platform for NYC contractors. LLM-driven cost estimation, automated contract generation, and a
+                        RAG pipeline indexing NYC DOB regulations. Core differentiator is an autonomous voice agent that
+                        calls suppliers to gather real-time material estimates. Stack: Python/FastAPI, React/Next.js,
+                        LangChain, PostgreSQL/pgvector, Twilio, OpenAI Whisper.</li>
+                </ul>
+
+                <hr style="border: none; border-top: 1px solid black; margin: 15px 0;">
+                <h2 style="font-size: 18px; text-transform: uppercase;">Skills</h2>
+                <p><strong>Languages:</strong> JavaScript, TypeScript, Python, NodeJS, Java, Kotlin, Swift, C, C++<br>
+                    <strong>Frontend:</strong> React, Redux, Next.JS, Tailwind CSS, Jetpack Compose, SwiftUI<br>
+                    <strong>Backend/Cloud:</strong> Node.js, Spring Boot, FastAPI, AWS (Lambda, ECS, S3, DynamoDB,
+                    Bedrock), GCP<br>
+                    <strong>Databases:</strong> PostgreSQL, MongoDB, DynamoDB, Snowflake, pgvector<br>
+                    <strong>AI & Data:</strong> SageMaker, LangChain, RAG, LLM Agents, PyTorch, Prompt Engineering,
+                    Claude/Cursor
+                </p>
+
+                <hr style="border: none; border-top: 1px solid black; margin: 15px 0;">
+                <h2 style="font-size: 18px; text-transform: uppercase;">Education & Certifications</h2>
+                <p><strong>University of Illinois Urbana-Champaign</strong> — Masters in Business Administration - AI &
+                    Analytics (2026 - Present)<br>
+                    <strong>University of Maryland</strong> — Bachelor of Science in Computer Science, Minor in History
+                    (2017 - 2021)<br>
+                    <strong>Certs:</strong> AWS Certified AI Practitioner (2025), Observe Certified (2025), AWS
+                    Solutions Architect (2023)
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- TASKBAR -->
+    <div class="taskbar">
+        <button class="start-btn" onclick="toggleStartMenu()">
+            <img src="https://win98icons.alexmeub.com/icons/png/windows_slanted-1.png" alt="Win"
+                style="width:16px; height:16px;">
+            <strong>Start</strong>
+        </button>
+        <div class="taskbar-divider"></div>
+
+        <div id="taskbar-tabs" class="taskbar-tabs">
+            <!-- Dynamically populated -->
+        </div>
+
+        <div class="system-tray">
+            <span id="clock" class="clock">12:00 PM</span>
+        </div>
+    </div>
+
+    <!-- START MENU -->
+    <div class="start-menu" id="start-menu">
+        <div class="start-sidebar">
+            <span class="sidebar-text">Windows 98</span>
+        </div>
+        <div class="start-items">
+            <div class="start-item" onclick="restoreWindow('window-about'); toggleStartMenu()"><u>P</u>rograms > About
+            </div>
+            <div class="start-item" onclick="restoreWindow('window-projects'); toggleStartMenu()"><u>D</u>ocuments >
+                Projects</div>
+            <div class="start-item" onclick="restoreWindow('window-paint'); toggleStartMenu()"><u>A</u>ccessories >
+                Paint</div>
+            <div class="start-item" onclick="restoreWindow('window-notepad'); toggleStartMenu()"><u>A</u>ccessories >
+                Notepad</div>
+            <div class="start-item" onclick="restoreWindow('window-minesweeper'); toggleStartMenu()"><u>G</u>ames >
+                Minesweeper</div>
+            <hr>
+            <div class="start-item" onclick="restoreWindow('window-net'); toggleStartMenu()"><u>S</u>ettings > Connect
+            </div>
+            <div class="start-item" onclick="restoreWindow('window-display'); toggleStartMenu()"><u>S</u>ettings >
+                Display
+            </div>
+            <hr>
+            <div class="start-item" onclick="triggerBSOD(); toggleStartMenu()"><u>S</u>hut Down...</div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+    <!-- CLIPPY -->
+    <div id="clippy" class="clippy-container">
+        <div class="clippy-speech-bubble">
+            <span class="clippy-close" onclick="dismissClippy()">X</span>
+            <p style="font-size:15px; font-weight:bold; margin-bottom:5px;">Interested in connecting?</p>
+            <div style="margin-top: 15px; text-align: center;">
+                <button onclick="centerAndOpenConnect()" class="win98-btn" style="text-decoration:none;">Yes, let's
+                    connect!</button>
+            </div>
+        </div>
+        <img src="https://win98icons.alexmeub.com/icons/png/help_book_big-0.png" alt="Clippy"
+            style="width: 48px; height: 48px; image-rendering: pixelated; cursor: pointer;" onclick="dismissClippy()"
+            title="Dismiss">
+    </div>
+</body>
+
+</html>
