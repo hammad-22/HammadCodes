@@ -360,7 +360,16 @@ body {
     font-size: 13px;
     display: flex;
     align-items: center;
+    overflow: hidden;
     box-shadow: inset -1px -1px var(--win98-border-black), inset 1px 1px var(--win98-border-white), inset -2px -2px var(--win98-border-dark), inset 2px 2px var(--win98-border-light);
+}
+
+.taskbar-tab span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    width: 100%;
 }
 
 .taskbar-tab.active {

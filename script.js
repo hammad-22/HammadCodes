@@ -127,7 +127,7 @@ function updateTaskbar() {
 
     // Tab Text
     const textSpan = document.createElement('span');
-    textSpan.innerText = titleText.length > 20 ? titleText.substring(0, 20) + '...' : titleText;
+    textSpan.innerText = titleText;
     tab.appendChild(textSpan);
 
     // Tab Click logic
