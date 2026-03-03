@@ -53,6 +53,10 @@
             <img src="https://win98icons.alexmeub.com/icons/png/console_prompt-0.png" alt="Snake">
             <span>Snake.exe</span>
         </div>
+        <div class="icon" ondblclick="restoreWindow('window-cmd')">
+            <img src="https://win98icons.alexmeub.com/icons/png/console_prompt-0.png" alt="Command Prompt">
+            <span>MS-DOS Prompt</span>
+        </div>
         <div class="icon" ondblclick="restoreWindow('window-notepad')">
             <img src="https://win98icons.alexmeub.com/icons/png/notepad_file-1.png" alt="Notepad">
             <span>Notepad</span>
@@ -186,7 +190,8 @@
                 <p style="margin-top: 5px;"><strong>Languages:</strong> TS/JS, Python, Java, Kotlin, Swift, C/C++</p>
             </div>
 
-            <div style="display:flex; justify-content:flex-end; margin-top: 10px;">
+            <div style="display:flex; justify-content:flex-end; gap: 5px; margin-top: 10px;">
+                <button class="ok-btn" onclick="restoreWindow('window-resume')">View Resume</button>
                 <button class="ok-btn" onclick="closeWindow('window-about')">OK</button>
             </div>
         </div>
@@ -453,6 +458,35 @@
         </div>
     </div>
 
+    <!-- WINDOW 12: COMMAND PROMPT -->
+    <div class="window hidden" id="window-cmd" style="top: 15%; left: 25%; width: 500px; display: none;">
+        <div class="title-bar" onmousedown="dragStart(event, 'window-cmd')">
+            <div class="title-bar-text">
+                <img src="https://win98icons.alexmeub.com/icons/png/console_prompt-0.png" class="title-icon">
+                MS-DOS Prompt
+            </div>
+            <div class="title-bar-controls">
+                <button aria-label="Minimize" onclick="minimizeWindow('window-cmd')"></button>
+                <button aria-label="Maximize"></button>
+                <button aria-label="Close" onclick="closeWindow('window-cmd')"></button>
+            </div>
+        </div>
+        <div class="window-body"
+            style="padding:0; margin:0; background: black; color: #c0c0c0; font-family: 'Courier New', Courier, monospace; font-size: 14px; height: 350px; overflow-y: scroll; display: flex; flex-direction: column;"
+            id="cmd-container" onclick="document.getElementById('cmd-input').focus()">
+            <div style="padding: 10px;" id="cmd-output">
+                <div>Microsoft(R) Windows 98</div>
+                <div> (C)Copyright Microsoft Corp 1981-1999.</div>
+                <br>
+            </div>
+            <div style="padding: 0 10px 10px 10px; display: flex;">
+                <span id="cmd-prompt-path">C:\WINDOWS></span>
+                <input type="text" id="cmd-input" autocomplete="off" spellcheck="false"
+                    style="background: transparent; border: none; color: #c0c0c0; font-family: 'Courier New', Courier, monospace; font-size: 14px; outline: none; flex: 1; margin-left: 5px;">
+            </div>
+        </div>
+    </div>
+
     <!-- WINDOW 9: DISPLAY PROPERTIES -->
     <div class="window hidden" id="window-display" style="top: 20%; left: 20%; width: 300px; display: none;">
         <div class="title-bar" onmousedown="dragStart(event, 'window-display')">
@@ -683,6 +717,8 @@
                 Notepad</div>
             <div class="start-item" onclick="restoreWindow('window-minesweeper'); toggleStartMenu()"><u>G</u>ames >
                 Minesweeper</div>
+            <div class="start-item" onclick="restoreWindow('window-cmd'); toggleStartMenu()"><u>P</u>rograms >
+                MS-DOS Prompt</div>
             <hr>
             <div class="start-item" onclick="restoreWindow('window-net'); toggleStartMenu()"><u>S</u>ettings > Connect
             </div>
