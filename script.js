@@ -3,13 +3,15 @@ let zIndexCounter = 20;
 
 // All primary windows start open. Store them in state.
 // We keep track of which windows exist, and which are in the taskbar.
-const windowRegistry = ['window-about', 'window-capone', 'window-projects', 'window-net', 'window-paint', 'window-minesweeper', 'window-snake', 'window-recycle', 'window-display', 'window-notepad', 'window-resume'];
+const windowRegistry = ['window-about', 'window-capone', 'window-projects', 'window-net', 'window-paint', 'window-minesweeper', 'window-snake', 'window-recycle', 'window-display', 'window-notepad', 'window-resume', 'window-cmd'];
+
+const isMobile = window.innerWidth <= 768;
 
 // State object mapped ID -> { isOpen: Boolean, isMinimized: Boolean }
 const winState = {
   'window-about': { isOpen: true, isMinimized: false },
-  'window-capone': { isOpen: true, isMinimized: false },
-  'window-projects': { isOpen: true, isMinimized: false },
+  'window-capone': { isOpen: !isMobile, isMinimized: false },
+  'window-projects': { isOpen: !isMobile, isMinimized: false },
   'window-net': { isOpen: true, isMinimized: false },
   'window-paint': { isOpen: false, isMinimized: false },
   'window-minesweeper': { isOpen: false, isMinimized: false },
@@ -17,8 +19,41 @@ const winState = {
   'window-recycle': { isOpen: false, isMinimized: false },
   'window-display': { isOpen: false, isMinimized: false },
   'window-notepad': { isOpen: false, isMinimized: false },
-  'window-resume': { isOpen: false, isMinimized: false }
+  'window-resume': { isOpen: false, isMinimized: false },
+  'window-cmd': { isOpen: false, isMinimized: false }
 };
+
+if (isMobile) {
+  const caponeWin = document.getElementById('window-capone');
+  const projectsWin = document.getElementById('window-projects');
+  if (caponeWin) caponeWin.style.display = 'none';
+  if (projectsWin) projectsWin.style.display = 'none';
+
+  // Position windows dynamically for mobile
+  document.querySelectorAll('.window').forEach((win, idx) => {
+    if (win.id === 'window-about') {
+      win.style.top = '25vh';
+      win.style.bottom = 'auto';
+      win.style.left = '7.5vw';
+    } else if (win.id === 'window-net') {
+      win.style.top = '5vh';
+      win.style.left = '7.5vw';
+    } else {
+      win.style.left = `${5 + (idx % 3) * 3}vw`;
+      win.style.top = `${5 + (idx % 3) * 3}vh`;
+    }
+  });
+}
+
+// Ensure dragging works on mobile by firing on touchstart
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.title-bar').forEach(bar => {
+    const win = bar.closest('.window');
+    if (win) {
+      bar.addEventListener('touchstart', (e) => dragStart(e, win.id), { passive: false });
+    }
+  });
+});
 
 function dragStart(e, windowId) {
   const win = document.getElementById(windowId);
@@ -33,12 +68,20 @@ function dragStart(e, windowId) {
   updateTaskbar();
 
   const rect = win.getBoundingClientRect();
-  let startX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
-  let startY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
+  let startX = e.clientX || (e.touches && e.touches.length > 0 ? e.touches[0].clientX : 0);
+  let startY = e.clientY || (e.touches && e.touches.length > 0 ? e.touches[0].clientY : 0);
   let initialLeft = rect.left;
   let initialTop = rect.top;
 
+  // Explicitly set top/left to current absolute rect position BEFORE clearing bottom/right to prevent jumping
+  win.style.top = `${initialTop}px`;
+  win.style.left = `${initialLeft}px`;
+  // Clear bottom/right so dragging purely responds to top/left adjustments
+  win.style.bottom = 'auto';
+  win.style.right = 'auto';
+
   function dragMove(ev) {
+    if (ev.type === 'touchmove') ev.preventDefault();
     const clientX = ev.clientX || (ev.touches ? ev.touches[0].clientX : 0);
     const clientY = ev.clientY || (ev.touches ? ev.touches[0].clientY : 0);
     const dx = clientX - startX;
@@ -208,28 +251,43 @@ const paintCanvas = document.getElementById('paintCanvas');
 const ctx = paintCanvas.getContext('2d');
 let painting = false;
 
+function getCoords(e) {
+  const rect = paintCanvas.getBoundingClientRect();
+  const scaleX = paintCanvas.width / rect.width;
+  const scaleY = paintCanvas.height / rect.height;
+  let clientX = e.clientX;
+  let clientY = e.clientY;
+  if (e.touches && e.touches.length > 0) {
+    clientX = e.touches[0].clientX;
+    clientY = e.touches[0].clientY;
+  }
+  return {
+    x: (clientX - rect.left) * scaleX,
+    y: (clientY - rect.top) * scaleY
+  };
+}
+
 function startPosition(e) {
+  if (e.type === 'touchstart') e.preventDefault();
   painting = true;
   draw(e);
 }
-function endPosition() {
+function endPosition(e) {
   painting = false;
   ctx.beginPath();
 }
 function draw(e) {
   if (!painting) return;
+  if (e.type === 'touchmove') e.preventDefault();
 
-  // get coords relative to canvas
-  const rect = paintCanvas.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
+  const coords = getCoords(e);
 
   ctx.lineWidth = 3;
   ctx.lineCap = 'round';
-  ctx.lineTo(x, y);
+  ctx.lineTo(coords.x, coords.y);
   ctx.stroke();
   ctx.beginPath();
-  ctx.moveTo(x, y);
+  ctx.moveTo(coords.x, coords.y);
 }
 
 // Basic white background for canvas
@@ -240,6 +298,11 @@ paintCanvas.addEventListener('mousedown', startPosition);
 paintCanvas.addEventListener('mouseup', endPosition);
 paintCanvas.addEventListener('mousemove', draw);
 paintCanvas.addEventListener('mouseout', endPosition);
+
+paintCanvas.addEventListener('touchstart', startPosition, { passive: false });
+paintCanvas.addEventListener('touchend', endPosition, { passive: false });
+paintCanvas.addEventListener('touchmove', draw, { passive: false });
+paintCanvas.addEventListener('touchcancel', endPosition, { passive: false });
 
 function clearPaint() {
   ctx.fillRect(0, 0, paintCanvas.width, paintCanvas.height);
@@ -542,4 +605,137 @@ function handleSnakeKey(e) {
   if ((e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') && snakeDirection !== 'right') snakeNextDirection = 'left';
   if ((e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') && snakeDirection !== 'left') snakeNextDirection = 'right';
   e.preventDefault();
+}
+
+// Mobile swipe support for Snake
+let touchStartX = null;
+let touchStartY = null;
+
+const snakeGridEl = document.getElementById('snakeGrid');
+if (snakeGridEl) {
+  snakeGridEl.addEventListener('touchstart', function (e) {
+    if (e.touches.length > 0) {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      e.preventDefault();
+    }
+  }, { passive: false });
+
+  snakeGridEl.addEventListener('touchmove', function (e) { e.preventDefault(); }, { passive: false });
+
+  snakeGridEl.addEventListener('touchend', function (e) {
+    if (touchStartX === null || touchStartY === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const touchEndY = e.changedTouches[0].clientY;
+
+    const dx = touchEndX - touchStartX;
+    const dy = touchEndY - touchStartY;
+
+    if (Math.abs(dx) > Math.abs(dy)) {
+      if (dx > 30 && snakeDirection !== 'left') snakeNextDirection = 'right';
+      else if (dx < -30 && snakeDirection !== 'right') snakeNextDirection = 'left';
+    } else {
+      if (dy > 30 && snakeDirection !== 'up') snakeNextDirection = 'down';
+      else if (dy < -30 && snakeDirection !== 'down') snakeNextDirection = 'up';
+    }
+    touchStartX = null;
+    touchStartY = null;
+  }, { passive: false });
+}
+
+// ==================================
+//         COMMAND PROMPT LOGIC
+// ==================================
+const cmdInput = document.getElementById('cmd-input');
+const cmdOutput = document.getElementById('cmd-output');
+const cmdContainer = document.getElementById('cmd-container');
+let currentPath = "C:\\WINDOWS>";
+
+if (cmdInput) {
+  cmdInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      const val = this.value.trim();
+      this.value = '';
+
+      // Print command
+      const cmdLine = document.createElement('div');
+      cmdLine.innerText = currentPath + val;
+      cmdOutput.appendChild(cmdLine);
+
+      processCommand(val);
+
+      // Scroll to bottom
+      if (cmdContainer) {
+        cmdContainer.scrollTop = cmdContainer.scrollHeight;
+      }
+    }
+  });
+}
+
+function processCommand(cmd) {
+  if (!cmd) return;
+
+  let args = cmd.split(' ');
+  let command = args[0].toLowerCase();
+
+  let output = '';
+
+  switch (command) {
+    case 'help':
+      output = `Supported commands:
+HELP    - Provides Help information for Windows commands.
+DIR     - Displays a list of files and subdirectories in a directory.
+ECHO    - Displays messages.
+CLS     - Clears the screen.
+DATE    - Displays the date.
+TIME    - Displays the system time.
+EXIT    - Quits the CMD.EXE program (command interpreter).`;
+      break;
+    case 'dir':
+      output = ` Volume in drive C is WINDOWS98
+ Volume Serial Number is 1F5Q-0418
+ Directory of C:\\WINDOWS
+ 
+03/03/2026  01:29 PM    <DIR>          .
+03/03/2026  01:29 PM    <DIR>          ..
+03/03/2026  10:14 AM    <DIR>          SYSTEM
+03/03/2026  10:14 AM    <DIR>          SYSTEM32
+03/03/2026  11:22 AM             1,452 NOTEPAD.EXE
+03/03/2026  11:22 AM             2,185 CALC.EXE
+03/03/2026  01:25 PM               402 CONFIG.SYS
+               3 File(s)          4,039 bytes
+               4 Dir(s)   2,147,483,648 bytes free`;
+      break;
+    case 'echo':
+      output = args.slice(1).join(' ');
+      break;
+    case 'cls':
+    case 'clear':
+      cmdOutput.innerHTML = '';
+      return;
+    case 'date':
+      let today = new Date();
+      output = `The current date is: ${today.toLocaleDateString('en-US', { weekday: 'short', month: '2-digit', day: '2-digit', year: 'numeric' }).replace(/,/g, '')}`;
+      break;
+    case 'time':
+      let now = new Date();
+      output = `The current time is: ${now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 2 })}`;
+      break;
+    case 'exit':
+      closeWindow('window-cmd');
+      return;
+    default:
+      output = `'${command}' is not recognized as an internal or external command,
+operable program or batch file.`;
+  }
+
+  if (output) {
+    const outDiv = document.createElement('div');
+    outDiv.style.whiteSpace = 'pre-wrap';
+    outDiv.innerText = output;
+    cmdOutput.appendChild(outDiv);
+  }
+
+  const br = document.createElement('br');
+  cmdOutput.appendChild(br);
 }

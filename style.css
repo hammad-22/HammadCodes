@@ -674,3 +674,81 @@ hr {
     border-radius: 50%;
     transform: scale(0.8);
 }
+
+/* --- MOBILE OPTIMIZATION --- */
+@media screen and (max-width: 768px) {
+    .desktop {
+        gap: 15px;
+        padding: 10px;
+        align-content: flex-start;
+        align-items: flex-start;
+    }
+
+    .window {
+        width: 85vw !important;
+        max-width: none !important;
+    }
+
+    /* Override inline heights that are too tall for small screens */
+    #window-resume {
+        height: 85vh !important;
+    }
+
+    #content-about-experience,
+    #content-about-education,
+    #content-about-skills,
+    #window-capone .inset-box,
+    #window-projects .inset-box,
+    .project-container,
+    .window-body textarea {
+        height: 60vh !important;
+        max-height: none !important;
+    }
+
+    .title-bar-text {
+        font-size: 14px;
+    }
+
+    /* Taskbar overflow scroll */
+    .taskbar-tabs {
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-right: 5px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .taskbar-tabs::-webkit-scrollbar {
+        display: none;
+        /* Hide scrollbar for cleaner look */
+    }
+
+    .taskbar-tab {
+        width: auto !important;
+        max-width: 140px;
+        flex-shrink: 0;
+    }
+
+    .system-tray {
+        font-size: 11px;
+        padding: 2px 4px;
+        flex-shrink: 0;
+    }
+
+    .start-btn {
+        padding: 3px 6px;
+        font-size: 13px;
+        flex-shrink: 0;
+    }
+
+    /* Ensure specific Easter eggs fit on screen */
+    #paintCanvas {
+        width: 100%;
+        max-width: 350px;
+    }
+
+    /* Make BSOD text legible without wrapping poorly */
+    .bsod {
+        font-size: 14px;
+        padding: 5%;
+    }
+}
