@@ -29,6 +29,29 @@ if (isMobile) {
   if (caponeWin) caponeWin.style.display = 'none';
   if (projectsWin) projectsWin.style.display = 'none';
 
+  // Update Clippy to point to projects instead of connect on mobile
+  document.addEventListener('DOMContentLoaded', () => {
+    const clippyP = document.querySelector('.clippy-speech-bubble p');
+    if (clippyP) clippyP.innerText = "Interested in what I'm building?";
+
+    const clippyBtn = document.querySelector('.clippy-speech-bubble button');
+    if (clippyBtn) {
+      clippyBtn.innerText = "View Projects";
+      clippyBtn.onclick = function () {
+        dismissClippy();
+        restoreWindow('window-projects');
+        setTimeout(() => {
+          const win = document.getElementById('window-projects');
+          const rect = win.getBoundingClientRect();
+          win.style.left = `calc(50vw - ${rect.width / 2}px)`;
+          win.style.top = `calc(50vh - ${rect.height / 2}px)`;
+          zIndexCounter++;
+          win.style.zIndex = zIndexCounter;
+        }, 10);
+      };
+    }
+  });
+
   // Position windows dynamically for mobile
   document.querySelectorAll('.window').forEach((win, idx) => {
     if (win.id === 'window-about') {
@@ -53,9 +76,21 @@ document.addEventListener('DOMContentLoaded', () => {
       bar.addEventListener('touchstart', (e) => dragStart(e, win.id), { passive: false });
     }
   });
+
+  // Explicitly handle touch on window controls to ensure they fire
+  document.querySelectorAll('.title-bar-controls button').forEach(btn => {
+    btn.addEventListener('touchend', function (e) {
+      e.preventDefault(); // Prevent default ghost clicks
+      this.click(); // Trigger the onclick perfectly
+    });
+  });
 });
 
 function dragStart(e, windowId) {
+  if (e.target.tagName && e.target.tagName.toLowerCase() === 'button') {
+    return;
+  }
+
   const win = document.getElementById(windowId);
 
   // Bring to front
