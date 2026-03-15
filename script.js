@@ -76,6 +76,14 @@ document.addEventListener('DOMContentLoaded', () => {
       bar.addEventListener('touchstart', (e) => dragStart(e, win.id), { passive: false });
     }
   });
+
+  // Explicitly handle touch on window controls to ensure they fire
+  document.querySelectorAll('.title-bar-controls button').forEach(btn => {
+    btn.addEventListener('touchend', function (e) {
+      e.preventDefault(); // Prevent default ghost clicks
+      this.click(); // Trigger the onclick perfectly
+    });
+  });
 });
 
 function dragStart(e, windowId) {
